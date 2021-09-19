@@ -33,6 +33,7 @@ table atp_players
     THEN TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()) - 1 
     ELSE TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()) END """
     type int
+    
   column Country
     sql Country
     type string
