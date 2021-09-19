@@ -1,0 +1,52 @@
+table atp_players
+  data_source TennisData
+  sql `Players`.`atp_players`
+  explore true
+  column Id
+    sql Id
+    type int
+  column Fname
+    sql Fname
+    type string
+  column Lname
+    sql Lname
+    type string
+  column PlayerName
+    sql """  concat(FName, ',', LName)      """
+    type string
+  column PlayTypeDescription
+    sql """  (case when  PlayType = 'R' then 'Right handed' ELSE 'Left Handed' END)     """
+    type string
+  column PlayType
+    sql PlayType
+    type string
+  column BirthDate
+    sql BirthDate
+    type int
+  column Birth_Date
+    sql """  str_to_date(convert(BirthDate,char), '%Y%m%d') """
+    type datetime
+  column Age
+    // sql """  TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()) """
+    sql """ CASE 
+    WHEN TIMESTAMPADD(year, TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()), Birth_Date) > CURRENT_DATE() 
+    THEN TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()) - 1 
+    ELSE TIMESTAMPDIFF(year, Birth_Date, CURRENT_DATE()) END """
+    type int
+  column Country
+    sql Country
+    type string
+  column CountryName
+    sql CountryName
+    type string
+  column number_of_rows
+    sql Count(*)
+    type int
+    
+  parameter RoundType
+   allowed_value "All"
+   allowed_value "Quarter Final"
+   allowed_value "Semi Final"
+   allowed_value "Final"
+   default_value "All"
+   type string
